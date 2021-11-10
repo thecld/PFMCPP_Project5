@@ -53,7 +53,9 @@ struct Compressor
     float ratio { 4.5f };
     float outputGain { -1.5f };
     float inputGain { -11.0f };
-    int compType = 2;
+    int compType { 2 };
+    std::string name { "compressor" };
+
 
     struct Saturator
     {
@@ -168,6 +170,7 @@ struct Bakery
     float numMoney;
     int maxOvenTemp;
     int minutesLeft;
+    std::string name;
 
     struct RyeBread
     {
@@ -192,7 +195,7 @@ struct Bakery
     RyeBread breadToSell;
 };
 
-Bakery::Bakery() : flourAmount(22.7), numCake(10), numBread(38), numMoney(8392.21f), maxOvenTemp(350), minutesLeft(0)
+Bakery::Bakery() : flourAmount(22.7), numCake(10), numBread(38), numMoney(8392.21f), maxOvenTemp(350), minutesLeft(0), name("bakery")
 {
     std::cout << "Bakery constructed." << "\n";
 }
@@ -275,6 +278,7 @@ struct House
     int numBathRooms;
     float totalFloorSize;
     int roomsToClean;
+    std::string name;
 
     struct Bathroom
     {
@@ -299,7 +303,7 @@ struct House
     Bathroom bathroomA;
 };
 
-House::House() : numWindows(8), livingRoomSize(31.8f), roomHeight(2.8f), numBathRooms(3), totalFloorSize(155.2f), roomsToClean(0)
+House::House() : numWindows(8), livingRoomSize(31.8f), roomHeight(2.8f), numBathRooms(3), totalFloorSize(155.2f), roomsToClean(0), name("house")
 {
     std::cout << "House constructed." << "\n";
 }
@@ -390,6 +394,8 @@ struct CompressorRack
 
 CompressorRack::CompressorRack()
 {
+    peakComp.name = "Peak compressor";
+    rmsComp.name = "RMS compressor";
     std::cout << "CompressorRack constructed!\n"; 
 }
 
@@ -403,12 +409,12 @@ CompressorRack::~CompressorRack()
 
 void CompressorRack::effectPowerSwitch(Compressor a)
 {
-    std::cout << a << " -> switching power state.\n";
+    std::cout << a.name << " -> switching power state.\n";
 }
 
 void CompressorRack::changeEffectPosition(Compressor a, Compressor b)
 {
-    std::cout << "Moving " << a << " to temporary slot. Moving " << b << " to slot slot A. Moving " << a << " to slot B.\n";
+    std::cout << "Moving " << a.name << " to temporary slot. Moving " << b.name << " to slot slot A. Moving " << a.name << " to slot B.\n";
 }
 
 /*
@@ -430,6 +436,9 @@ struct Neighborhood
 
 Neighborhood::Neighborhood()
 {
+    house1A.name = "First house";
+    house1B.name = "Second house";
+    bioBakery.name = "Bio bakery";
     std::cout << "Neighborhood constructed!\n";
 }
 
@@ -443,12 +452,12 @@ Neighborhood::~Neighborhood()
 
 void Neighborhood::grassSprinklers(House a)
 {
-    std::cout << a << " -> Turning on grass sprinklers for 15 minutes!\n";
+    std::cout << a.name << " -> Turning on grass sprinklers for 15 minutes!\n";
 }
 
 void Neighborhood::deliverBread(House a)
 {
-    std::cout << bioBakery << "will deliver freash bread to " << a << " soon!\n";
+    std::cout << bioBakery.name << " will deliver fresh bread to " << a.name << " soon!\n";
 }
 
 /*
@@ -510,9 +519,16 @@ int main()
     rackA.rmsComp.threshold = -5.0;
     Neighborhood neighborhoodA;
 
-    /*rackA.effectPowerSwitch(peakComp);
-    rackA.effectPowerSwitch(rmsComp);
-    rackA.changeEffectPosition(peakComp, rmsComp);*/
+    std::cout << "\n";
+
+    rackA.effectPowerSwitch(rackA.peakComp);
+    rackA.effectPowerSwitch(rackA.rmsComp);
+    rackA.changeEffectPosition(rackA.peakComp, rackA.rmsComp);
+
+    std::cout << "\n";
+
+    neighborhoodA.grassSprinklers(neighborhoodA.house1A);
+    neighborhoodA.deliverBread(neighborhoodA.house1B);
 
     std::cout << "\n";
 
