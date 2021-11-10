@@ -188,9 +188,9 @@ struct Bakery
     };
 
     void bakeBread(RyeBread brd);
-    float cakeSell(std::string cakeName);
+    float sellCake(std::string cakeName);
     void smellGreat();
-    int minuteTimer(int timeAmount);
+    int createTimer(int timeAmount);
 
     RyeBread breadToSell;
 };
@@ -220,7 +220,7 @@ void Bakery::bakeBread(RyeBread brd)
     std::cout << "Flour used: " << flourAmount << std::endl << "Timer set to: " << brd.bakingTime << std::endl << "Oven set to: " << maxOvenTemp << std::endl;
 }
 
-float Bakery::cakeSell(std::string cakeName)
+float Bakery::sellCake(std::string cakeName)
 {
     if (cakeName == "Sweet Cake")
     {
@@ -237,7 +237,7 @@ void Bakery::smellGreat()
     std::cout << "Smelling great!" << std::endl;
 }
 
-int Bakery::minuteTimer(int timeAmount)
+int Bakery::createTimer(int timeAmount)
 {
     minutesLeft = timeAmount;
     while (minutesLeft >= 0)
@@ -292,13 +292,13 @@ struct House
 
         void getSteamy();
         void turnWaterOn();
-        bool towelsState();
+        bool getTowelsState();
     };
 
     void provideShelter();
     void provideRest(float sleepQuality);
     bool getDirty(int numPeople, int numAnimals);
-    int cleaningProcedure(int numDirtyRooms, int secondsPerRoom);
+    int cleanHouse(int numDirtyRooms, int secondsPerRoom);
 
     Bathroom bathroomA;
 };
@@ -323,7 +323,7 @@ House::Bathroom::~Bathroom()
     std::cout << "Nested type Bathroom destructed." << "\n";
 }
 
-int House::cleaningProcedure(int numDirtyRooms, int secondsPerRoom)
+int House::cleanHouse(int numDirtyRooms, int secondsPerRoom)
 {
     if (secondsPerRoom > -1)
     {
@@ -387,7 +387,7 @@ struct CompressorRack
     Compressor peakComp;
     Compressor rmsComp;
 
-    void effectPowerSwitch(Compressor a);
+    void changePowerState(Compressor a);
     void changeEffectPosition(Compressor a, Compressor b);
 
 };
@@ -407,7 +407,7 @@ CompressorRack::~CompressorRack()
     std::cout << "CompressorRack destructed!\n"; 
 }
 
-void CompressorRack::effectPowerSwitch(Compressor a)
+void CompressorRack::changePowerState(Compressor a)
 {
     std::cout << a.name << " -> switching power state.\n";
 }
@@ -430,7 +430,7 @@ struct Neighborhood
     House house1B;
     Bakery bioBakery;
 
-    void grassSprinklers(House);
+    void activateSprinklers(House);
     void deliverBread(House);
 };
 
@@ -445,12 +445,12 @@ Neighborhood::Neighborhood()
 Neighborhood::~Neighborhood()
 {
     std::cout << "Let's clean the houses before destructing the neighborhood!\n";
-    house1A.cleaningProcedure(5, 3);
-    house1B.cleaningProcedure(3, 6);
+    house1A.cleanHouse(5, 3);
+    house1B.cleanHouse(3, 6);
     std::cout << "Neighborhood destructed!\n";
 }
 
-void Neighborhood::grassSprinklers(House a)
+void Neighborhood::activateSprinklers(House a)
 {
     std::cout << a.name << " -> Turning on grass sprinklers for 15 minutes!\n";
 }
@@ -492,9 +492,9 @@ int main()
     std::cout << "\n";
 
     bakedBakery.bakeBread(bakedBakery.breadToSell);
-    bakedBakery.cakeSell("That cake over there");
+    bakedBakery.sellCake("That cake over there");
     bakedBakery.smellGreat();
-    bakedBakery.minuteTimer(13);
+    bakedBakery.createTimer(13);
 
     std::cout << "\n";
 
@@ -502,7 +502,7 @@ int main()
     smallHouse.provideShelter();
     smallHouse.provideRest(3.58f);
     smallHouse.getDirty(2, 0);
-    smallHouse.cleaningProcedure(2,28);
+    smallHouse.cleanHouse(2,28);
 
     std::cout << "\n";
 
@@ -510,7 +510,7 @@ int main()
     bigHouse.provideShelter();
     bigHouse.provideRest(4.58f);
     bigHouse.getDirty(5, 2);
-    bigHouse.cleaningProcedure(3,9);
+    bigHouse.cleanHouse(3,9);
 
     std::cout << "\n";
 
@@ -521,13 +521,13 @@ int main()
 
     std::cout << "\n";
 
-    rackA.effectPowerSwitch(rackA.peakComp);
-    rackA.effectPowerSwitch(rackA.rmsComp);
+    rackA.changePowerState(rackA.peakComp);
+    rackA.changePowerState(rackA.rmsComp);
     rackA.changeEffectPosition(rackA.peakComp, rackA.rmsComp);
 
     std::cout << "\n";
 
-    neighborhoodA.grassSprinklers(neighborhoodA.house1A);
+    neighborhoodA.activateSprinklers(neighborhoodA.house1A);
     neighborhoodA.deliverBread(neighborhoodA.house1B);
 
     std::cout << "\n";
