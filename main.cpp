@@ -222,6 +222,8 @@ struct Bakery
     int createTimer(int timeAmount);
 
     RyeBread breadToSell;
+
+    void sCNB();
 };
 
 Bakery::Bakery() : flourAmount(22.7), numCake(10), numBread(38), numMoney(8392.21f), maxOvenTemp(350), minutesLeft(0), name("bakery")
@@ -242,6 +244,11 @@ Bakery::RyeBread::RyeBread()
 Bakery::RyeBread::~RyeBread()
 {
     std::cout << "Nested type RyeBread destructed." << "\n";
+}
+
+void Bakery::sCNB()
+{
+    std::cout << "Bakery sellCake(): " << this->sellCake("Sweet Cake") << " Bakery numBread: " << this->numBread << "\n";
 }
 
 void Bakery::bakeBread(RyeBread brd)
@@ -330,6 +337,8 @@ struct House
     int cleanHouse(int numDirtyRooms, int secondsPerRoom);
 
     Bathroom bathroomA;
+
+    void tFSGD();
 };
 
 House::House() : numWindows(8), livingRoomSize(31.8f), roomHeight(2.8f), numBathRooms(3), totalFloorSize(155.2f), roomsToClean(0), name("house")
@@ -350,6 +359,11 @@ House::Bathroom::Bathroom()
 House::Bathroom::~Bathroom()
 {
     std::cout << "Nested type Bathroom destructed." << "\n";
+}
+
+void House::tFSGD()
+{
+    std::cout << "House totalFlootSize: " << this->totalFloorSize << " House getDirty(): " << this->getDirty(10,25) << "\n";
 }
 
 int House::cleanHouse(int numDirtyRooms, int secondsPerRoom)
@@ -558,6 +572,16 @@ int main()
 
     neighborhoodA.activateSprinklers(neighborhoodA.house1A);
     neighborhoodA.deliverBread(neighborhoodA.house1B);
+
+    std::cout << "\n";
+
+    std::cout << "bakedBakery.sellCake(): " << bakedBakery.sellCake("Sweet Cake") << " bakedBakery.numBread: " << bakedBakery.numBread << "\n";
+    bakedBakery.sCNB();
+
+    std::cout << "\n";
+
+    std::cout << "smallHouse.totalFlootSize: " << smallHouse.totalFloorSize << " smallHouse.getDirty(): " << smallHouse.getDirty(10,25) << "\n";
+    smallHouse.tFSGD();
 
     std::cout << "\n";
 
