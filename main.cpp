@@ -222,6 +222,8 @@ struct Bakery
     int createTimer(int timeAmount);
 
     RyeBread breadToSell;
+
+    void sellAndGetNumMoney();
 };
 
 Bakery::Bakery() : flourAmount(22.7), numCake(10), numBread(38), numMoney(8392.21f), maxOvenTemp(350), minutesLeft(0), name("bakery")
@@ -244,6 +246,11 @@ Bakery::RyeBread::~RyeBread()
     std::cout << "Nested type RyeBread destructed." << "\n";
 }
 
+void Bakery::sellAndGetNumMoney()
+{
+    std::cout << "Bakery sellCake(): " << this->sellCake("Sweet Cake") << " Bakery numMoney: " << this->numMoney << "\n";
+}
+
 void Bakery::bakeBread(RyeBread brd)
 {
     std::cout << "Flour used: " << flourAmount << std::endl << "Timer set to: " << brd.bakingTime << std::endl << "Oven set to: " << maxOvenTemp << std::endl;
@@ -254,6 +261,7 @@ float Bakery::sellCake(std::string cakeName)
     if (cakeName == "Sweet Cake")
     {
         std::cout << "Product sold: " << cakeName << std::endl;
+        this->numMoney += 9430.f;
         return 9430.f;
     }
 
@@ -330,6 +338,8 @@ struct House
     int cleanHouse(int numDirtyRooms, int secondsPerRoom);
 
     Bathroom bathroomA;
+
+    void printFloorSizeAndDirtnessLevel();
 };
 
 House::House() : numWindows(8), livingRoomSize(31.8f), roomHeight(2.8f), numBathRooms(3), totalFloorSize(155.2f), roomsToClean(0), name("house")
@@ -350,6 +360,11 @@ House::Bathroom::Bathroom()
 House::Bathroom::~Bathroom()
 {
     std::cout << "Nested type Bathroom destructed." << "\n";
+}
+
+void House::printFloorSizeAndDirtnessLevel()
+{
+    std::cout << "House totalFlootSize: " << this->totalFloorSize << " House getDirty(): " << this->getDirty(10,25) << "\n";
 }
 
 int House::cleanHouse(int numDirtyRooms, int secondsPerRoom)
@@ -558,6 +573,17 @@ int main()
 
     neighborhoodA.activateSprinklers(neighborhoodA.house1A);
     neighborhoodA.deliverBread(neighborhoodA.house1B);
+
+    std::cout << "\n";
+
+    std::cout << "bakedBakery.sellCake(): " << bakedBakery.sellCake("Sweet Cake") << " bakedBakery.numMoney: " << bakedBakery.numMoney << "\n";
+    bakedBakery.numMoney = 8392.21f;
+    bakedBakery.sellAndGetNumMoney();
+
+    std::cout << "\n";
+
+    std::cout << "smallHouse.totalFlootSize: " << smallHouse.totalFloorSize << " smallHouse.getDirty(): " << smallHouse.getDirty(10,25) << "\n";
+    smallHouse.printFloorSizeAndDirtnessLevel();
 
     std::cout << "\n";
 
