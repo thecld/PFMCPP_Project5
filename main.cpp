@@ -223,7 +223,7 @@ struct Bakery
 
     RyeBread breadToSell;
 
-    void sCNB();
+    void sellAndGetNumMoney();
 };
 
 Bakery::Bakery() : flourAmount(22.7), numCake(10), numBread(38), numMoney(8392.21f), maxOvenTemp(350), minutesLeft(0), name("bakery")
@@ -246,9 +246,9 @@ Bakery::RyeBread::~RyeBread()
     std::cout << "Nested type RyeBread destructed." << "\n";
 }
 
-void Bakery::sCNB()
+void Bakery::sellAndGetNumMoney()
 {
-    std::cout << "Bakery sellCake(): " << this->sellCake("Sweet Cake") << " Bakery numBread: " << this->numBread << "\n";
+    std::cout << "Bakery sellCake(): " << this->sellCake("Sweet Cake") << " Bakery numMoney: " << this->numMoney << "\n";
 }
 
 void Bakery::bakeBread(RyeBread brd)
@@ -261,6 +261,7 @@ float Bakery::sellCake(std::string cakeName)
     if (cakeName == "Sweet Cake")
     {
         std::cout << "Product sold: " << cakeName << std::endl;
+        this->numMoney += 9430.f;
         return 9430.f;
     }
 
@@ -338,7 +339,7 @@ struct House
 
     Bathroom bathroomA;
 
-    void tFSGD();
+    void printFloorSizeAndDirtnessLevel();
 };
 
 House::House() : numWindows(8), livingRoomSize(31.8f), roomHeight(2.8f), numBathRooms(3), totalFloorSize(155.2f), roomsToClean(0), name("house")
@@ -361,7 +362,7 @@ House::Bathroom::~Bathroom()
     std::cout << "Nested type Bathroom destructed." << "\n";
 }
 
-void House::tFSGD()
+void House::printFloorSizeAndDirtnessLevel()
 {
     std::cout << "House totalFlootSize: " << this->totalFloorSize << " House getDirty(): " << this->getDirty(10,25) << "\n";
 }
@@ -575,13 +576,14 @@ int main()
 
     std::cout << "\n";
 
-    std::cout << "bakedBakery.sellCake(): " << bakedBakery.sellCake("Sweet Cake") << " bakedBakery.numBread: " << bakedBakery.numBread << "\n";
-    bakedBakery.sCNB();
+    std::cout << "bakedBakery.sellCake(): " << bakedBakery.sellCake("Sweet Cake") << " bakedBakery.numMoney: " << bakedBakery.numMoney << "\n";
+    bakedBakery.numMoney = 8392.21f;
+    bakedBakery.sellAndGetNumMoney();
 
     std::cout << "\n";
 
     std::cout << "smallHouse.totalFlootSize: " << smallHouse.totalFloorSize << " smallHouse.getDirty(): " << smallHouse.getDirty(10,25) << "\n";
-    smallHouse.tFSGD();
+    smallHouse.printFloorSizeAndDirtnessLevel();
 
     std::cout << "\n";
 
