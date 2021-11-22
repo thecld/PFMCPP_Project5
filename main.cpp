@@ -73,6 +73,7 @@ void someMemberFunction(const Axe& axe);
 
 #include <iostream>
 #include <cmath>
+#include "LeakedObjectDetector.h"
 /*
  copied UDT 1:
  */
@@ -102,14 +103,27 @@ struct Compressor
         void changeType(int satType);
         bool checkClipping();
         void oversample(bool oversampling);
+        JUCE_LEAK_DETECTOR(Saturator)
     };
 
     void compress(double audioIn);
     void volumeMakeUp();
-    void saturateInput(Saturator sat);
+    void saturateInput(const Saturator& sat);
     double rampThreshold(double desiredThreshold);
 
     Saturator satA;
+    JUCE_LEAK_DETECTOR(Compressor)
+};
+
+struct CompresssorWrapper
+{
+    CompresssorWrapper(Compressor* comp) : compPtr(comp) {}
+    ~CompresssorWrapper()
+    {
+        delete compPtr;
+    }
+
+    Compressor* compPtr = nullptr;
 };
 
 Compressor::Compressor()
@@ -149,7 +163,7 @@ void Compressor::volumeMakeUp()
     std::cout << "Adjusting the volume by " << difference << std::endl;
 }
 
-void Compressor::saturateInput(Saturator sat)
+void Compressor::saturateInput(const Saturator& sat)
 {
     std::cout << "Saturation engaged! Saturator type: " << sat.satType << std::endl << "Mix parameter is set to: " << sat.mix << std::endl;
 }
@@ -217,9 +231,10 @@ struct Bakery
         void mixIngredients();
         float getWeight(float flourUsed, float numPumpkinSeeds, float numLinseed);
         bool burn(int bakingTime);
+        JUCE_LEAK_DETECTOR(RyeBread)
     };
 
-    void bakeBread(RyeBread brd);
+    void bakeBread(const RyeBread& brd);
     float sellCake(std::string cakeName);
     void smellGreat();
     int createTimer(int timeAmount);
@@ -227,6 +242,17 @@ struct Bakery
     RyeBread breadToSell;
 
     void sellAndGetNumMoney();
+    JUCE_LEAK_DETECTOR(Bakery)
+};
+
+struct BakeryWrapper
+{
+    BakeryWrapper(Bakery* bakery) : bakeryPtr(bakery) {}
+    ~BakeryWrapper()
+    {
+        delete bakeryPtr;
+    }
+    Bakery* bakeryPtr = nullptr;
 };
 
 Bakery::Bakery() : flourAmount(22.7), numCake(10), numBread(38), numMoney(8392.21f), maxOvenTemp(350), minutesLeft(0), name("bakery")
@@ -254,7 +280,7 @@ void Bakery::sellAndGetNumMoney()
     std::cout << "Bakery sellCake(): " << this->sellCake("Sweet Cake") << " Bakery numMoney: " << this->numMoney << "\n";
 }
 
-void Bakery::bakeBread(RyeBread brd)
+void Bakery::bakeBread(const RyeBread& brd)
 {
     std::cout << "Flour used: " << flourAmount << std::endl << "Timer set to: " << brd.bakingTime << std::endl << "Oven set to: " << maxOvenTemp << std::endl;
 }
@@ -333,6 +359,7 @@ struct House
         void getSteamy();
         void turnWaterOn();
         bool getTowelsState();
+        JUCE_LEAK_DETECTOR(Bathroom)
     };
 
     void provideShelter();
@@ -343,6 +370,17 @@ struct House
     Bathroom bathroomA;
 
     void printFloorSizeAndDirtnessLevel();
+    JUCE_LEAK_DETECTOR(House)
+};
+
+struct HouseWrapper
+{
+    HouseWrapper(House* house) : housePtr(house) {}
+    ~HouseWrapper()
+    {
+        delete housePtr;
+    }
+    House* housePtr = nullptr;
 };
 
 House::House() : numWindows(8), livingRoomSize(31.8f), roomHeight(2.8f), numBathRooms(3), totalFloorSize(155.2f), roomsToClean(0), name("house")
@@ -434,9 +472,20 @@ struct CompressorRack
     Compressor peakComp;
     Compressor rmsComp;
 
-    void changePowerState(Compressor a);
-    void changeEffectPosition(Compressor a, Compressor b);
+    void changePowerState(Compressor& a);
+    void changeEffectPosition(Compressor& a, Compressor& b);
 
+    JUCE_LEAK_DETECTOR(CompressorRack)
+};
+
+struct CompressorRackWrapper
+{
+    CompressorRackWrapper(CompressorRack* cr) : compRackPtr(cr) {}
+    ~CompressorRackWrapper()
+    {
+        delete compRackPtr;
+    }
+    CompressorRack* compRackPtr = nullptr;
 };
 
 CompressorRack::CompressorRack()
@@ -454,12 +503,12 @@ CompressorRack::~CompressorRack()
     std::cout << "CompressorRack destructed!\n"; 
 }
 
-void CompressorRack::changePowerState(Compressor a)
+void CompressorRack::changePowerState(Compressor& a)
 {
     std::cout << a.name << " -> switching power state.\n";
 }
 
-void CompressorRack::changeEffectPosition(Compressor a, Compressor b)
+void CompressorRack::changeEffectPosition(Compressor& a, Compressor& b)
 {
     std::cout << "Moving " << a.name << " to temporary slot. Moving " << b.name << " to slot slot A. Moving " << a.name << " to slot B.\n";
 }
@@ -477,8 +526,20 @@ struct Neighborhood
     House house1B;
     Bakery bioBakery;
 
-    void activateSprinklers(House);
-    void deliverBread(House);
+    void activateSprinklers(House&);
+    void deliverBread(House&);
+
+    JUCE_LEAK_DETECTOR(Neighborhood)
+};
+
+struct NeighborhoodWrapper
+{
+    NeighborhoodWrapper(Neighborhood* nh) : neighborhoodPtr(nh) {}
+    ~NeighborhoodWrapper()
+    {
+        delete neighborhoodPtr;
+    }
+    Neighborhood* neighborhoodPtr = nullptr;
 };
 
 Neighborhood::Neighborhood()
@@ -497,12 +558,12 @@ Neighborhood::~Neighborhood()
     std::cout << "Neighborhood destructed!\n";
 }
 
-void Neighborhood::activateSprinklers(House a)
+void Neighborhood::activateSprinklers(House& a)
 {
     std::cout << a.name << " -> Turning on grass sprinklers for 15 minutes!\n";
 }
 
-void Neighborhood::deliverBread(House a)
+void Neighborhood::deliverBread(House& a)
 {
     std::cout << bioBakery.name << " will deliver fresh bread to " << a.name << " soon!\n";
 }
@@ -523,70 +584,71 @@ void Neighborhood::deliverBread(House a)
 
 int main()
 {
-    Compressor compA;
-    Bakery bakedBakery;
-    House smallHouse;
-    House bigHouse;
+    CompresssorWrapper compWrapper(new Compressor());
+    BakeryWrapper bakeryWrapper(new Bakery());
+    HouseWrapper smallHouseWrapper(new House());
+    HouseWrapper bigHouseWrapper(new House());
+
 
     std::cout << "\n";
     
-    compA.compress(-4.56);
-    compA.volumeMakeUp();
-    compA.saturateInput(compA.satA);
-    compA.rampThreshold(-7.0);
-    compA.rampThreshold(-1.3);
+    compWrapper.compPtr->compress(-4.56);
+    compWrapper.compPtr->volumeMakeUp();
+    compWrapper.compPtr->saturateInput(compWrapper.compPtr->satA);
+    compWrapper.compPtr->rampThreshold(-7.0);
+    compWrapper.compPtr->rampThreshold(-1.3);
     
     std::cout << "\n";
 
-    bakedBakery.bakeBread(bakedBakery.breadToSell);
-    bakedBakery.sellCake("That cake over there");
-    bakedBakery.smellGreat();
-    bakedBakery.createTimer(13);
+    bakeryWrapper.bakeryPtr->bakeBread(bakeryWrapper.bakeryPtr->breadToSell);
+    bakeryWrapper.bakeryPtr->sellCake("That cake over there");
+    bakeryWrapper.bakeryPtr->smellGreat();
+    bakeryWrapper.bakeryPtr->createTimer(13);
 
     std::cout << "\n";
 
-    smallHouse.totalFloorSize = 80.2f;
-    smallHouse.provideShelter();
-    smallHouse.provideRest(3.58f);
-    smallHouse.getDirty(2, 0);
-    smallHouse.cleanHouse(2,28);
+    smallHouseWrapper.housePtr->totalFloorSize = 80.2f;
+    smallHouseWrapper.housePtr->provideShelter();
+    smallHouseWrapper.housePtr->provideRest(3.58f);
+    smallHouseWrapper.housePtr->getDirty(2, 0);
+    smallHouseWrapper.housePtr->cleanHouse(2,28);
 
     std::cout << "\n";
 
-    bigHouse.totalFloorSize = 280.5f;
-    bigHouse.provideShelter();
-    bigHouse.provideRest(4.58f);
-    bigHouse.getDirty(5, 2);
-    bigHouse.cleanHouse(3,9);
+    bigHouseWrapper.housePtr->totalFloorSize = 280.5f;
+    bigHouseWrapper.housePtr->provideShelter();
+    bigHouseWrapper.housePtr->provideRest(4.58f);
+    bigHouseWrapper.housePtr->getDirty(5, 2);
+    bigHouseWrapper.housePtr->cleanHouse(3,9);
 
     std::cout << "\n";
 
-    CompressorRack rackA;
-    rackA.peakComp.threshold = -3.0;
-    rackA.rmsComp.threshold = -5.0;
-    Neighborhood neighborhoodA;
+    CompressorRackWrapper compRackWrapper(new CompressorRack);
+    compRackWrapper.compRackPtr->peakComp.threshold = -3.0;
+    compRackWrapper.compRackPtr->rmsComp.threshold = -5.0;
+    NeighborhoodWrapper neighborhoodWrapper(new Neighborhood);
 
     std::cout << "\n";
 
-    rackA.changePowerState(rackA.peakComp);
-    rackA.changePowerState(rackA.rmsComp);
-    rackA.changeEffectPosition(rackA.peakComp, rackA.rmsComp);
+    compRackWrapper.compRackPtr->changePowerState(compRackWrapper.compRackPtr->peakComp);
+    compRackWrapper.compRackPtr->changePowerState(compRackWrapper.compRackPtr->rmsComp);
+    compRackWrapper.compRackPtr->changeEffectPosition(compRackWrapper.compRackPtr->peakComp, compRackWrapper.compRackPtr->rmsComp);
 
     std::cout << "\n";
 
-    neighborhoodA.activateSprinklers(neighborhoodA.house1A);
-    neighborhoodA.deliverBread(neighborhoodA.house1B);
+    neighborhoodWrapper.neighborhoodPtr->activateSprinklers(neighborhoodWrapper.neighborhoodPtr->house1A);
+    neighborhoodWrapper.neighborhoodPtr->deliverBread(neighborhoodWrapper.neighborhoodPtr->house1B);
 
     std::cout << "\n";
 
-    std::cout << "bakedBakery.sellCake(): " << bakedBakery.sellCake("Sweet Cake") << " bakedBakery.numMoney: " << bakedBakery.numMoney << "\n";
-    bakedBakery.numMoney = 8392.21f;
-    bakedBakery.sellAndGetNumMoney();
+    std::cout << "bakedBakery.sellCake(): " << bakeryWrapper.bakeryPtr->sellCake("Sweet Cake") << " bakedBakery.numMoney: " << bakeryWrapper.bakeryPtr->numMoney << "\n";
+    bakeryWrapper.bakeryPtr->numMoney = 8392.21f;
+    bakeryWrapper.bakeryPtr->sellAndGetNumMoney();
 
     std::cout << "\n";
 
-    std::cout << "smallHouse.totalFlootSize: " << smallHouse.totalFloorSize << " smallHouse.getDirty(): " << smallHouse.getDirty(10,25) << "\n";
-    smallHouse.printFloorSizeAndDirtnessLevel();
+    std::cout << "smallHouse.totalFlootSize: " << smallHouseWrapper.housePtr->totalFloorSize << " smallHouse.getDirty(): " << smallHouseWrapper.housePtr->getDirty(10,25) << "\n";
+    smallHouseWrapper.housePtr->printFloorSizeAndDirtnessLevel();
 
     std::cout << "\n";
 
