@@ -1,11 +1,8 @@
-#pragma once
-#include "Compressor.h"
-#include "Bakery.h"
-#include "House.h"
-#include "CompressorRack.h"
-#include "Neighborhood.h"
-
 struct Compressor;
+struct Bakery;
+struct House;
+struct CompressorRack;
+struct Neighborhood;
 
 struct CompresssorWrapper
 {

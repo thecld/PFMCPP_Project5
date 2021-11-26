@@ -1,5 +1,9 @@
-#include <iostream>
 #include "Wrappers.h"
+#include "Compressor.h"
+#include "Bakery.h"
+#include "House.h"
+#include "CompressorRack.h"
+#include "Neighborhood.h"
 
 
 CompresssorWrapper::CompresssorWrapper(Compressor* comp) : compPtr(comp) {}
