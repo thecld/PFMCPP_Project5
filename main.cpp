@@ -30,11 +30,6 @@
          just split it up into source files and provide the appropriate #include directives.
  */
 
-//#include <iostream>
-//#include <cmath>
-//#include "LeakedObjectDetector.h"
-#include "CompressorRack.h"
-#include "Neighborhood.h"
 #include "Wrappers.h"
 
 int main()

@@ -1,50 +1,43 @@
+#pragma once
+#include "Compressor.h"
+#include "Bakery.h"
+#include "House.h"
+#include "CompressorRack.h"
+#include "Neighborhood.h"
+
+struct Compressor;
+
 struct CompresssorWrapper
 {
-    CompresssorWrapper(Compressor* comp) : compPtr(comp) {}
-    ~CompresssorWrapper()
-    {
-        delete compPtr;
-    }
-
+    CompresssorWrapper(Compressor* comp);
+    ~CompresssorWrapper();
     Compressor* compPtr = nullptr;
 };
 
 struct BakeryWrapper
 {
-    BakeryWrapper(Bakery* bakery) : bakeryPtr(bakery) {}
-    ~BakeryWrapper()
-    {
-        delete bakeryPtr;
-    }
+    BakeryWrapper(Bakery* bakery);
+    ~BakeryWrapper();
     Bakery* bakeryPtr = nullptr;
 };
 
 struct HouseWrapper
 {
-    HouseWrapper(House* house) : housePtr(house) {}
-    ~HouseWrapper()
-    {
-        delete housePtr;
-    }
+    HouseWrapper(House* house);
+    ~HouseWrapper();
     House* housePtr = nullptr;
 };
 
 struct CompressorRackWrapper
 {
-    CompressorRackWrapper(CompressorRack* cr) : compRackPtr(cr) {}
-    ~CompressorRackWrapper()
-    {
-        delete compRackPtr;
-    }
+    CompressorRackWrapper(CompressorRack* cr);
+    ~CompressorRackWrapper();
     CompressorRack* compRackPtr = nullptr;
 };
 
 struct NeighborhoodWrapper
 {
-    NeighborhoodWrapper(Neighborhood* nh) : neighborhoodPtr(nh) {}
-    ~NeighborhoodWrapper()
-    {
-        delete neighborhoodPtr;
-    }
+    NeighborhoodWrapper(Neighborhood* nh);
+    ~NeighborhoodWrapper();
     Neighborhood* neighborhoodPtr = nullptr;
 };

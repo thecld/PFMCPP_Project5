@@ -1,6 +1,7 @@
+#pragma once
 #include "LeakedObjectDetector.h"
-#include "House.h"
 #include "Bakery.h"
+#include "House.h"
 
 struct Neighborhood
 {

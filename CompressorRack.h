@@ -1,3 +1,4 @@
+#pragma once
 #include "LeakedObjectDetector.h"
 #include "Compressor.h"
 
