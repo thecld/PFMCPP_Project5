@@ -1,4 +1,5 @@
 #pragma once
+
 #include "LeakedObjectDetector.h"
 #include "Bakery.h"
 #include "House.h"

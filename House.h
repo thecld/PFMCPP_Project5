@@ -1,4 +1,5 @@
 #pragma once
+
 #include "LeakedObjectDetector.h"
 
 struct House

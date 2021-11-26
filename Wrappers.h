@@ -1,3 +1,5 @@
+#pragma once
+
 struct Compressor;
 struct Bakery;
 struct House;
